@@ -7,24 +7,32 @@
 //Scr (umol/L)
 
 import React from "react";
+import { useState } from "react";
 
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import { useState } from "react";
 import Button from "@material-ui/core/Button";
-
-import { parse } from "mathjs";
-
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
+import { makeStyles } from "@material-ui/core";
 
-export default function InputsCard() {
+const useStyles = makeStyles({
+  cardStyle: {
+    padding: "25px",
+    marginTop: "20px"
+  }
+})
+
+export default function InputsCard(props) {
+
+  const classes = useStyles();
+
   const [PtHeight, setPtHeight] = useState(0);
   const [PtWeight, setPtWeight] = useState(0);
   const [PtAge, setPtAge] = useState(0);
@@ -57,14 +65,19 @@ export default function InputsCard() {
   }
 
   const CalculateClickHandler = () => {
-    console.log("click");
-    const f = parse("x * e^(-0.058*t)");
-    console.log(f.toString());
-    console.log(f.evaluate({ x: 8, t: 12 }));
+
+    props.onCalculate({
+      PtHeight: PtHeight,
+      PtWeight: PtWeight,
+      PtAge: PtAge,
+      Scr: Scr,
+      Gender: Gender
+    })
+
   };
 
   return (
-    <Card>
+    <Card className={classes.cardStyle}>
       <Typography variant="h6" gutterBottom>
         Patient Information
       </Typography>
@@ -75,6 +88,7 @@ export default function InputsCard() {
             label="Height (cm)"
             onChange={PtHeightChangeHandler}
             type="number"
+            
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -86,12 +100,13 @@ export default function InputsCard() {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField id="age" label="Age (Yrs)" onChange={PtAgeChangeHandler} />
+          <TextField id="age" label="Age (Yrs)" type="number" onChange={PtAgeChangeHandler} />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
             id="Scr"
             label="Serum Cr (umol/L)"
+            type="number"
             onChange={ScrChangeHandler}
           />
         </Grid>
@@ -103,6 +118,7 @@ export default function InputsCard() {
               aria-label="gender"
               name="gender1"
               onChange={GenderChangeHandler}
+              row
             >
               <FormControlLabel
                 value="female"
