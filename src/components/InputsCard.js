@@ -9,7 +9,7 @@
 import React from "react";
 import { useState } from "react";
 
-import Card from "@material-ui/core/Card";
+
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
@@ -22,12 +22,10 @@ import FormLabel from '@material-ui/core/FormLabel';
 
 import { makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles({
-  cardStyle: {
-    padding: "25px",
-    marginTop: "20px"
-  }
-})
+const useStyles = makeStyles((theme) => ({
+  
+}
+));
 
 export default function InputsCard(props) {
 
@@ -37,7 +35,7 @@ export default function InputsCard(props) {
   const [PtWeight, setPtWeight] = useState(0);
   const [PtAge, setPtAge] = useState(0);
   const [Scr, setScr] = useState(0);
-  const [Gender, setGender] = useState()
+  const [Gender, setGender] = useState(null)
 
   const PtHeightChangeHandler = (e) => {
     console.log("Height changed to " + e.target.value);
@@ -66,19 +64,23 @@ export default function InputsCard(props) {
 
   const CalculateClickHandler = () => {
 
-    props.onCalculate({
-      PtHeight: PtHeight,
-      PtWeight: PtWeight,
-      PtAge: PtAge,
-      Scr: Scr,
-      Gender: Gender
-    })
+    if(PtHeight !== 0 && PtWeight !==0 && PtAge !==0 && Scr !== 0 && Gender !== null){
+      props.onCalculate({
+        PtHeight: PtHeight,
+        PtWeight: PtWeight,
+        PtAge: PtAge,
+        Scr: Scr,
+        Gender: Gender
+      })
+    }
+   
 
   };
 
   return (
-    <Card className={classes.cardStyle}>
-      <Typography variant="h6" gutterBottom>
+   <>
+     
+      <Typography variant="h6" color="secondary" gutterBottom>
         Patient Information
       </Typography>
       <Grid container spacing={2}>
@@ -141,6 +143,6 @@ export default function InputsCard(props) {
           </Button>
         </Grid>
       </Grid>
-    </Card>
+    </>
   );
 }
