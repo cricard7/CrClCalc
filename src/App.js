@@ -11,36 +11,57 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 
 import { makeStyles } from "@material-ui/core";
+import { createTheme, ThemeProvider } from "@material-ui/core";
+import { teal, orange } from '@material-ui/core/colors';
 
-import { calcBSA, calcBMI, calcIBWDevine, calcCrClIBW, calcCrClABW, calcAdjBW, calcAdjCrCl } from "./calculations.js"
+import {
+  calcBSA,
+  calcBMI,
+  calcIBWDevine,
+  calcCrClIBW,
+  calcCrClABW,
+  calcAdjBW,
+  calcAdjCrCl,
+} from "./calculations.js";
 
 const useStyles = makeStyles((theme) => ({
   paperStyle: {
     padding: theme.spacing(2),
     height: 300,
-    display: 'flex',
-    overflow: 'auto'
-
+    display: "flex",
+    overflow: "auto",
+  },
+  patientInfoStyle: {
+    padding: theme.spacing(2),
+    height: 300,
+    overflow: "auto",
   },
   containerStyle: {
-    marginTop: theme.spacing(2)
-  }
+    marginTop: theme.spacing(2),
+  },
 }));
+
+const theme = createTheme({
+  palette: {
+    primary: teal,
+    secondary: orange,
+  },
+});
 
 function App() {
   const classes = useStyles();
 
-  const [BMI, setBMI] = useState(0)
-  const [BSA, setBSA] = useState(0)
+  const [BMI, setBMI] = useState(0);
+  const [BSA, setBSA] = useState(0);
 
   const calculateHandler = (data) => {
     console.log(data);
 
     //Calculate BSA m2
-    setBSA(calcBSA({ PtHeight: data.PtHeight, PtWeight: data.PtWeight }))
-    
+    setBSA(calcBSA({ PtHeight: data.PtHeight, PtWeight: data.PtWeight }));
+
     //Calculate BMI kg/m2
-    setBMI(calcBMI({ PtHeight: data.PtHeight, PtWeight: data.PtWeight }))
+    setBMI(calcBMI({ PtHeight: data.PtHeight, PtWeight: data.PtWeight }));
 
     //Calculate IBW (Devine) kg
     console.log(
@@ -90,28 +111,32 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <AppBar position="static" color="primary">
-        <Toolbar>
-          <Typography variant="h6">Creatinine Clearance Calculator</Typography>
-        </Toolbar>
-      </AppBar>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <AppBar position="static" color="primary">
+          <Toolbar>
+            <Typography variant="h6">
+              Creatinine Clearance Calculator
+            </Typography>
+          </Toolbar>
+        </AppBar>
 
-      <Container fixed className={classes.containerStyle}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={8} lg={9}>
-            <Paper elevation={5} className={classes.paperStyle}>
-              <InputsCard onCalculate={calculateHandler} />
-            </Paper>
+        <Container fixed className={classes.containerStyle}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={8} lg={9}>
+              <Paper elevation={5} className={classes.patientInfoStyle}>
+                <InputsCard onCalculate={calculateHandler} />
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={4} lg={3}>
+              <Paper elevation={5} className={classes.paperStyle}>
+                <WtBSA BSA={BSA} BMI={BMI} />
+              </Paper>
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={4} lg={3}>
-            <Paper elevation={5} className={classes.paperStyle}>
-              <WtBSA BSA={BSA} BMI={BMI} />
-            </Paper>
-          </Grid>
-        </Grid>
-      </Container>
-    </div>
+        </Container>
+      </div>
+    </ThemeProvider>
   );
 }
 
