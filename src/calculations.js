@@ -27,12 +27,12 @@ const calcIBWDevine = ({ PtHeight, Gender, PtWeight }) => {
 
     if (Gender === "female") {
       const IBW = parse("45.5 + (2.3 * inchOver5Ft)");
-      return IBW.evaluate({ inchOver5Ft: inchOver5Ft });
+      return IBW.evaluate({ inchOver5Ft: inchOver5Ft }).toFixed(2);
     }
 
     if (Gender === "male") {
       const IBW = parse("50 + (2.3 * inchOver5Ft)");
-      return IBW.evaluate({ inchOver5Ft: inchOver5Ft });
+      return IBW.evaluate({ inchOver5Ft: inchOver5Ft }).toFixed(2);
     }
   } else {
     return PtWeight;
@@ -40,6 +40,7 @@ const calcIBWDevine = ({ PtHeight, Gender, PtWeight }) => {
 };
 
 const calcCrClIBW = ({ PtAge, IBW, Gender, Scr }) => {
+  console.log({PtAge, IBW, Gender, Scr})
   var N;
   if (Gender === "female") {
     N = 1.04;
@@ -67,7 +68,7 @@ const calcCrClABW = ({ PtAge, ABW, Gender, Scr }) => {
 
 const calcAdjBW = ({ IBW, ABW }) => {
   const AdjBW = parse("IBW + (0.4 * (ABW - IBW))");
-  return AdjBW.evaluate({ IBW: IBW, ABW: ABW });
+  return AdjBW.evaluate({ IBW: IBW, ABW: ABW }).toFixed(2);
 };
 
 const calcAdjCrCl = ({ PtAge, AdjBW, Gender, Scr }) => {
