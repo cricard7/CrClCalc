@@ -1,7 +1,9 @@
 import React from "react";
 import { Typography, makeStyles, Grid } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles((theme) => ({
+  
+}));
 
 const CrClCard = (props) => {
   const classes = useStyles();
@@ -19,16 +21,16 @@ const CrClCard = (props) => {
           </Typography>
 
           <Typography variant="h5" color="initial">
-            CrCl: {props.CrCl} ml/min
+            {props.CrCl} ml/min
           </Typography>
 
           <Typography variant="h5" color="initial">
-            Weight: {props.BW} kg
+            {props.BW} kg
           </Typography>
         </Grid>
         <Grid item>
           <div>
-            <Typography variant="caption" color="primary">
+            <Typography variant="caption" color="secondary">
               {props.WtText}
             </Typography>
           </div>

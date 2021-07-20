@@ -27,6 +27,9 @@ const Usage = () => {
           </Typography>
         </AccordionSummary>
         <AccordionDetails className={classes.UsageStyle}>
+          <Typography variant="body1" color="initial">
+            Height, Weight, Age, Scr and Gender must best entered before calculating values
+          </Typography>
           <Typography variant="body1" color="error">
             For patients where actual is 30% greater than ideal, consideration
             should be given to using Adjusted Body Weight. <br />
@@ -51,7 +54,8 @@ const Usage = () => {
             *For patients that are underweight (BMI less than 18.5), consider
             using actual weight <br />
             *For patients that are normal weight,(BMI 18.5-24.9), consider using
-            ideal body weight
+            ideal body weight <br/>
+            *Consider using actual body weight when actual weight is less than ideal weight
           </Typography>
         </AccordionDetails>
       </Accordion>

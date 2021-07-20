@@ -17,6 +17,9 @@ import { makeStyles } from "@material-ui/core";
 import { createTheme, ThemeProvider } from "@material-ui/core";
 import { teal, orange } from "@material-ui/core/colors";
 
+//import clsx from 'clsx'; //https://surajsharma.net/blog/react-material-ui-add-classes
+import classNames from 'classnames' //https://www.npmjs.com/package/classnames
+
 import {
   calcBSA,
   calcBMI,
@@ -43,6 +46,10 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     Height: 200,
     overflow: "auto",
+    
+  },
+  selectedCrCl: {
+    backgroundColor: teal[400]
   },
   referencesStyle: {
     padding: theme.spacing(2),
@@ -71,6 +78,11 @@ const App = () => {
   const [adjBW, setadjBW] = useState(0)
   const [adjCrCl, setadjCrCl] = useState(0)
   const [ABW, setABW] = useState(0)
+  
+  //flags for toggling background color on CrCl Cards
+  const [useIBW, setuseIBW] = useState(false)
+  const [useABW, setUseABW] = useState(false)
+  const [useAdjBW, setUseAdjBW] = useState(false)  
 
   const calculateHandler = (data) => {
     console.log(data);
@@ -101,6 +113,12 @@ const App = () => {
       Gender: data.Gender,
       Scr: data.Scr,
     })
+
+    //setBackground Color of CrCl Cards
+    if(parseFloat(data.PtWeight) > parseFloat(tempIBW) && !((parseFloat(data.PtWeight) / parseFloat(tempIBW)) >= 1.3)){setuseIBW(true)}else{setuseIBW(false)}
+    if((parseFloat(tempBMI) < 18.5) || (parseFloat(data.PtWeight) < parseFloat(tempIBW))){setUseABW(true)}else{setUseABW(false)}
+    if((parseFloat(data.PtWeight) / parseFloat(tempIBW)) >= 1.3){setUseAdjBW(true)}else{setUseAdjBW(false)}
+    
 
     //set Actual Weight for display
     setABW(data.PtWeight)
@@ -144,7 +162,7 @@ const App = () => {
               </Paper>
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
-              <Paper elevation={5} className={classes.crclcardStyle}>
+              <Paper elevation={5} className={classNames(classes.crclcardStyle, {[classes.selectedCrCl]: useIBW})}>
                 <CrClCard 
                 title="CrCl (IBW)" 
                 CrCl={CrClIBW} 
@@ -153,7 +171,7 @@ const App = () => {
               </Paper>
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
-              <Paper elevation={5} className={classes.crclcardStyle}>
+              <Paper elevation={5} className={classNames(classes.crclcardStyle, {[classes.selectedCrCl]: useABW})}>
               <CrClCard 
                 title="CrCl (ABW)" 
                 CrCl={crClABW} 
@@ -162,7 +180,7 @@ const App = () => {
               </Paper>
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
-              <Paper elevation={5} className={classes.crclcardStyle}>
+              <Paper elevation={5} className={classNames(classes.crclcardStyle, {[classes.selectedCrCl]: useAdjBW})}>
               <CrClCard 
                 title="CrCl (Adj BW)" 
                 CrCl={adjCrCl} 
