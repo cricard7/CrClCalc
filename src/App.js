@@ -28,6 +28,7 @@ import {
   calcCrClABW,
   calcAdjBW,
   calcAdjCrCl,
+  calcmNBWCrCl
 } from "./calculations.js";
 
 const useStyles = makeStyles((theme) => ({
@@ -78,7 +79,8 @@ const App = () => {
   const [adjBW, setadjBW] = useState(0)
   const [adjCrCl, setadjCrCl] = useState(0)
   const [ABW, setABW] = useState(0)
-  
+  const [mNBWCrCl, setmNBWCrCl] = useState(0)
+
   //flags for toggling background color on CrCl Cards
   const [useIBW, setuseIBW] = useState(false)
   const [useABW, setUseABW] = useState(false)
@@ -136,6 +138,10 @@ const App = () => {
     setadjBW(tempAdjBW)
     //if ABW >= 30% IBW then calculate Adjusted CrCl ml/min
     setadjCrCl(tempAdjCrCl)
+
+    //calculate mNBWCrCl
+    setmNBWCrCl(calcmNBWCrCl({Scr: data.Scr, PtAge: data.PtAge, Gender: data.Gender}))
+
   };
 
   return (
@@ -186,6 +192,15 @@ const App = () => {
                 CrCl={adjCrCl} 
                 BW={adjBW} 
                 WtText={'Weight Using Adjusted Body Weight'} />
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper elevation={5} className={classNames(classes.crclcardStyle)}>
+              <CrClCard 
+                title="CrCl (mNBW)" 
+                CrCl={mNBWCrCl} 
+                BW={"72"} 
+                WtText={'Weight modified Normalized Body weight (mNBW). CrCl mL/min/72kg'} />
               </Paper>
             </Grid>
             <Grid item xs={12}>

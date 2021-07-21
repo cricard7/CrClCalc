@@ -1,5 +1,22 @@
 import { parse } from "mathjs";
 
+
+const calcmNBWCrCl = ({Scr, PtAge, Gender}) => {
+// modified Normalized body weight CrCl calculation
+//Recalibrated formulary for isotope dilution mass spectrometry (IDMS) method
+  var N;
+  if (Gender === "female") {
+    N = 0.85;
+  }
+  if (Gender === "male") {
+    N = 1;
+  }
+const mNBWCrCl = parse("(((140 - age) * 88.4) / Scr) * N")
+  console.log("nMBWCrCl: " +mNBWCrCl.evaluate({age: PtAge, Scr: Scr}))
+return mNBWCrCl.evaluate({age: PtAge, Scr: Scr, N: N}).toFixed(2)
+
+}
+
 const calcBSA = ({ PtHeight, PtWeight }) => {
   //ht in cm, wt in kg
   //calc BSA in m2
@@ -94,5 +111,6 @@ export {
   calcCrClIBW,
   calcCrClABW,
   calcAdjBW,
-  calcAdjCrCl
+  calcAdjCrCl,
+  calcmNBWCrCl
 };
